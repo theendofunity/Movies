@@ -15,13 +15,16 @@ class TabBarViewController: UITabBarController {
     }
     
     private func setupTabBar() {
+        let popularViewModel = PopularMoviesViewModel()
+        let topViewModel = TopMoviesViewModel()
+        
         viewControllers = [
             createTabBarItem(title: "Popular",
                              icon: nil,
-                             viewController: CollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())),
+                             viewController: CollectionViewController(viewModel: popularViewModel)),
             createTabBarItem(title: "Top",
                              icon: nil,
-                             viewController: CollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())),
+                             viewController: CollectionViewController(viewModel: topViewModel)),
             createTabBarItem(title: "Search",
                              icon: nil,
                              viewController: SearchViewController())
