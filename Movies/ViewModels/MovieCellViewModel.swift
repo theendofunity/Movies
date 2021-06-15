@@ -8,7 +8,7 @@
 import UIKit
 
 class MovieCellViewModel: MovieCellViewModelType {
+    var title: String?
+    
     var moviePoster: UIImage?
-    
-    
 }
