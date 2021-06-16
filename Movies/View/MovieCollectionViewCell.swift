@@ -9,21 +9,24 @@ import UIKit
 import Kingfisher
 
 class MovieCollectionViewCell: UICollectionViewCell {
-//    MARK: - Properties
+    //    MARK: - Properties
     
     static let identifier = "MovieCollectionViewCell"
     let poster = UIImageView()
-
+    
     var viewModel: MovieCellViewModelType? {
-        willSet {
-            guard let urlString = viewModel?.moviePosterUrl,
+        didSet {
+            guard let viewModel = viewModel,
+                  let urlString = viewModel.moviePosterUrl,
                   let url = URL(string: urlString)
             else { return }
-            poster.kf.setImage(with: url)
+            let placeholder = UIImage(named: "moviePlaceholder")
+            poster.kf.indicatorType = .activity
+            poster.kf.setImage(with: url, placeholder: placeholder)
         }
     }
     
-//    MARK: - Initializers
+    //    MARK: - Initializers
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -34,12 +37,11 @@ class MovieCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-//    MARK: - UISetup
+    //    MARK: - UISetup
     
     private func setupLayout() {
-        poster.image = UIImage(named: "moviePlaceholder")
         poster.translatesAutoresizingMaskIntoConstraints = false
-
+        
         addSubview(poster)
         
         poster.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
