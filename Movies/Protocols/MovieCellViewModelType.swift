@@ -10,4 +10,6 @@ import UIKit
 protocol MovieCellViewModelType {
     var moviePoster: UIImage? { get set }
     var title: String? { get set }
+    var moviePosterUrl: String? { get set }
+
 }

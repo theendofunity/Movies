@@ -13,9 +13,13 @@ enum Errors: Error {
     case decodeError
 }
 
+
 class ApiService {
-    func fetchData<T>(from urlString: String, completion: @escaping ((Result<T, Error>) -> Void)) where T: Decodable {
-        guard let url = URL(string: urlString) else {
+    static let shared = ApiService()
+    
+    func fetchData<T>(from url: URL?, completion: @escaping ((Result<T, Error>) -> Void)) where T: Decodable {
+        print(url)
+        guard let url = url else {
             completion(.failure(Errors.incorrectUrl))
             return
         }

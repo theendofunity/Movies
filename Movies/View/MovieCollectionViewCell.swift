@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class MovieCollectionViewCell: UICollectionViewCell {
 //    MARK: - Properties
@@ -15,8 +16,10 @@ class MovieCollectionViewCell: UICollectionViewCell {
 
     var viewModel: MovieCellViewModelType? {
         willSet {
-            guard let newPoster = viewModel?.moviePoster else { return }
-            poster.image = newPoster
+            guard let urlString = viewModel?.moviePosterUrl,
+                  let url = URL(string: urlString)
+            else { return }
+            poster.kf.setImage(with: url)
         }
     }
     

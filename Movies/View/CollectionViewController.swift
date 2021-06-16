@@ -34,6 +34,11 @@ class CollectionViewController: UICollectionViewController {
         // Register cell classes
         self.collectionView!.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: MovieCollectionViewCell.identifier)
         
+        viewModel.loadMovies { [weak self] in
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
     }
     
     // MARK: UICollectionViewDataSource

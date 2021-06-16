@@ -7,11 +7,7 @@
 
 import Foundation
 
-let baseUrl = "api.themoviedb.org/"
-//https://api.themoviedb.org/3/trending/movie/day?api_key=cc701e53a063a1bb08fdd2512e584b0e
-//https://api.themoviedb.org/3/movie/top_rated?api_key=cc701e53a063a1bb08fdd2512e584b0e&language=en-US&page=1
-//https://api.themoviedb.org/3/movie/popular?api_key=cc701e53a063a1bb08fdd2512e584b0e&language=en-US&page=1
-//https://api.themoviedb.org/3/search/movie?api_key=cc701e53a063a1bb08fdd2512e584b0e&language=en-US&query=REQUEST&page=1
+let baseUrl = "api.themoviedb.org"
 
 
 protocol Request {
@@ -39,7 +35,7 @@ struct PopularRequest: Request {
 }
 
 struct TopRequest: Request {
-    let path = "3/movie/top_rated"
+    let path = "/3/movie/top_rated"
     let page: Int
 
     func url() -> URL? {

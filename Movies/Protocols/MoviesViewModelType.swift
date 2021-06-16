@@ -8,10 +8,13 @@
 import UIKit
 
 protocol MoviesViewModelType {
+    var currentPage: Int { get set }
+    var lastPage: Int { get set }
+
     var movies: [Movie] { get set }
     
     func numberOfItems() -> Int
     func cellViewModel(for indexPath: IndexPath) -> MovieCellViewModelType?
     
-    func loadMovies()
+    func loadMovies(completion: @escaping (() -> Void))
 }
