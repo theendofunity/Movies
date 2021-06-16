@@ -8,7 +8,10 @@
 import UIKit
 
 protocol MoviesViewModelType {
-    func numberOfItems() -> Int
+    var movies: [Movie] { get set }
     
+    func numberOfItems() -> Int
     func cellViewModel(for indexPath: IndexPath) -> MovieCellViewModelType?
+    
+    func loadMovies()
 }

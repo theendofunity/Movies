@@ -8,13 +8,19 @@
 import Foundation
 
 class PopularMoviesViewModel: MoviesViewModelType {
+    
+    
+    var movies: [Movie] = []
+    
     func numberOfItems() -> Int {
-        10
+        return movies.count
     }
     
     func cellViewModel(for indexPath: IndexPath) -> MovieCellViewModelType? {
         nil
     }
     
-    
+    func loadMovies() {
+        
+    }
 }
