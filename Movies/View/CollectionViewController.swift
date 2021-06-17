@@ -33,12 +33,9 @@ class CollectionViewController: UICollectionViewController {
         
         // Register cell classes
         self.collectionView!.register(MovieCollectionViewCell.self, forCellWithReuseIdentifier: MovieCollectionViewCell.identifier)
+        self.collectionView!.register(LoadingCollectionViewCell.self, forCellWithReuseIdentifier: LoadingCollectionViewCell.identifier)
         
-        viewModel.loadMovies { [weak self] in
-            DispatchQueue.main.async {
-                self?.collectionView.reloadData()
-            }
-        }
+        loadMoreData()
     }
     
     // MARK: UICollectionViewDataSource
@@ -48,18 +45,38 @@ class CollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.numberOfItems()
+        let numberOfItems = viewModel.numberOfItems()
+        if numberOfItems == 0 { //data did not loading now
+            return numberOfItems
+        }
+        return viewModel.numberOfItems() + 1 // +1 -- loading cell
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+       
+        if indexPath.item == viewModel.numberOfItems() {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LoadingCollectionViewCell.identifier, for: indexPath) as? LoadingCollectionViewCell else { return UICollectionViewCell() }
+            print("loading cell")
+            cell.activityIndicator.startAnimating()
+            
+            return cell
+        }
+        
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCollectionViewCell.identifier, for: indexPath) as? MovieCollectionViewCell else { return UICollectionViewCell() }
         
         let cellViewModel = viewModel.cellViewModel(for: indexPath)
         cell.viewModel = cellViewModel
-        
+
         return cell
     }
     
+    override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        if indexPath.item >= viewModel.numberOfItems() {
+            DispatchQueue.global().asyncAfter(deadline: .now() + 3) {
+                self.loadMoreData()
+            }
+        }
+    }
     // MARK: - UI Configuration
     
     private func setupLayout() {
@@ -76,5 +93,15 @@ class CollectionViewController: UICollectionViewController {
         let availableWidth = collectionView.frame.width - paddingWidth
         let widthForItem = availableWidth / itemsAtRow
         layout.itemSize = CGSize(width: widthForItem, height: widthForItem)
+    }
+    
+    //    MARK: - Data loading
+    
+    private func loadMoreData() {
+        viewModel.loadMovies { [weak self] in
+            DispatchQueue.main.async {
+                self?.collectionView.reloadData()
+            }
+        }
     }
 }

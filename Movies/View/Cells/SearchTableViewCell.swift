@@ -47,6 +47,7 @@ class SearchTableViewCell: UITableViewCell {
         poster.image = UIImage(named: "moviePlaceholder")
         poster.translatesAutoresizingMaskIntoConstraints = false
         title.text = "Some movie"
+        title.numberOfLines = 0
         title.translatesAutoresizingMaskIntoConstraints = false
         
         let stackview = UIStackView(arrangedSubviews: [poster, title])

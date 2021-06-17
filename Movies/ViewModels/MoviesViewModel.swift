@@ -45,7 +45,7 @@ class MoviesViewModel: MoviesViewModelType {
             case .failure(let error):
                 print(error)
             case .success(let data):
-//                self?.lastPage = data.totalPages
+                self?.lastPage = data.totalPages
                 
                 for newMovie in data.results {
                     guard let movie = Movie(with: newMovie) else { continue }
