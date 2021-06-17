@@ -15,9 +15,9 @@ class TabBarViewController: UITabBarController {
     }
     
     private func setupTabBar() {
-        let popularViewModel = PopularMoviesViewModel()
-        let topViewModel = TopMoviesViewModel()
-        let searchViewModel = SearchViewModel()
+        let popularViewModel = MoviesViewModel(type: .popular)
+        let topViewModel = MoviesViewModel(type: .top)
+        let searchViewModel = MoviesViewModel(type: .search)
         
         viewControllers = [
             createTabBarItem(title: "Popular",

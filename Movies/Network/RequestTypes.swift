@@ -9,14 +9,21 @@ import Foundation
 
 let baseUrl = "api.themoviedb.org"
 
+enum RequestType {
+    case popular
+    case top
+    case search
+}
 
 protocol Request {
     var path: String { get }
-    
+    var requestType: RequestType { get }
     func url() -> URL?
 }
 
 struct PopularRequest: Request {
+    let requestType: RequestType = .popular
+    
     let path = "/3/movie/popular"
     let page: Int
     
@@ -35,6 +42,8 @@ struct PopularRequest: Request {
 }
 
 struct TopRequest: Request {
+    let requestType: RequestType = .top
+
     let path = "/3/movie/top_rated"
     let page: Int
 
@@ -53,6 +62,8 @@ struct TopRequest: Request {
 }
 
 struct SearchRequest: Request {
+    let requestType: RequestType = .search
+
     let path = "/3/search/movie"
     var query: String
     

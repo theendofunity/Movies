@@ -10,6 +10,8 @@ import UIKit
 protocol MoviesViewModelType {
     var currentPage: Int { get set }
     var lastPage: Int { get set }
+    var query: String? { get set }
+    var requestType: RequestType { get }
 
     var movies: [Movie] { get set }
     

@@ -18,28 +18,29 @@ class ApiService {
     static let shared = ApiService()
     
     func fetchData<T>(from url: URL?, completion: @escaping ((Result<T, Error>) -> Void)) where T: Decodable {
+        print(url)
         guard let url = url else {
             completion(.failure(Errors.incorrectUrl))
             return
         }
-
+        
         let task = URLSession.shared.dataTask(with: url) { data, _, error in
             if error != nil {
                 completion(.failure(error!))
             }
-
+            
             guard let data = data else {
                 completion(.failure(Errors.emptyData))
                 return
             }
             if let apiData = try? JSONDecoder().decode(T.self, from: data) {
-            completion(.success(apiData))
+                completion(.success(apiData))
             } else {
                 completion(.failure(Errors.decodeError))
             }
-
+            
         }
-
+        
         task.resume()
     }
 }

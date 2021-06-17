@@ -1,5 +1,5 @@
 //
-//  PopularMoviesViewModel.swift
+//  TopMoviesViewModel.swift
 //  Movies
 //
 //  Created by Дмитрий Дудкин on 15.06.2021.
@@ -7,10 +7,17 @@
 
 import Foundation
 
-class PopularMoviesViewModel: MoviesViewModelType {
-    var currentPage: Int = 0
+class MoviesViewModel: MoviesViewModelType {
+    var query: String?
+    var requestType: RequestType
+    
+    var currentPage: Int = 1
     var lastPage: Int = 1
     var movies: [Movie] = []
+    
+    init(type: RequestType) {
+        self.requestType = type
+    }
     
     func numberOfItems() -> Int {
         return movies.count
@@ -27,9 +34,9 @@ class PopularMoviesViewModel: MoviesViewModelType {
             return
         }
         
+        guard let request = createRequest() else { return }
+        
         currentPage += 1
-
-        let request = PopularRequest(page: currentPage)
         
         ApiService.shared.fetchData(from: request.url()) { [weak self] (result: Result<MoviesData, Error>) in
             switch result {
@@ -45,5 +52,22 @@ class PopularMoviesViewModel: MoviesViewModelType {
                 completion()
             }
         }
+    }
+    
+    private func createRequest()  -> Request?{
+        let request: Request
+        
+        switch requestType {
+        case .popular:
+            request = PopularRequest(page: currentPage)
+        case .top:
+            request = TopRequest(page: currentPage)
+        case .search:
+            guard let query = query else {
+                return nil
+            }
+            request = SearchRequest(query: query)
+        }
+        return request
     }
 }
