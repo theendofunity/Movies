@@ -37,6 +37,7 @@ class SearchViewController: UITableViewController {
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Enter movies title"
+        definesPresentationContext = true
         
         self.tableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.identifier)
         
