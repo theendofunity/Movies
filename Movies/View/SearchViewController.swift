@@ -7,11 +7,16 @@
 
 import UIKit
 
-class SearchViewController: UITableViewController, UISearchResultsUpdating {
+class SearchViewController: UITableViewController {
     
     //    MARK: - Properties
     let viewModel: MoviesViewModel
-    let searchBar = UISearchController()
+    let searchController = UISearchController(searchResultsController: nil)
+    var searchBarIsEmpty: Bool {
+        guard let text = searchController.searchBar.text else { return true }
+        return text.isEmpty
+    }
+    var searchDelayTimer: Timer?
     
     //    MARK: - Initializers
 
@@ -29,17 +34,13 @@ class SearchViewController: UITableViewController, UISearchResultsUpdating {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        searchBar.searchResultsUpdater = self
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Enter movies title"
         
         self.tableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.identifier)
         
         setupLayout()
-    }
-    
-    //    MARK:  - Search result
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        
     }
     
     //    MARK:  - TableViewDelegate
@@ -65,6 +66,31 @@ class SearchViewController: UITableViewController, UISearchResultsUpdating {
     
     private func setupLayout() {
         tableView.tableFooterView = UIView()
-        tableView.tableHeaderView = searchBar.searchBar
+        tableView.tableHeaderView = searchController.searchBar
+    }
+}
+
+
+extension SearchViewController: UISearchResultsUpdating {
+    //    MARK:  - Search result
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        searchDelayTimer?.invalidate()
+        
+        searchDelayTimer = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(search), userInfo: nil, repeats: false)
+    }
+    
+    @objc private func search() {
+        if !searchBarIsEmpty {
+            viewModel.query = searchController.searchBar.text!
+            
+            viewModel.movies.removeAll()
+            
+            viewModel.loadMovies { [weak self] in
+                DispatchQueue.main.async {
+                    self?.tableView.reloadData()
+                }
+            }
+        }
     }
 }

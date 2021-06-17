@@ -12,7 +12,7 @@ class MoviesViewModel: MoviesViewModelType {
     var requestType: RequestType
     
     var currentPage: Int = 1
-    var lastPage: Int = 1
+    var lastPage: Int = 10
     var movies: [Movie] = []
     
     init(type: RequestType) {
@@ -36,14 +36,16 @@ class MoviesViewModel: MoviesViewModelType {
         
         guard let request = createRequest() else { return }
         
-        currentPage += 1
+        if requestType != .search {
+            currentPage += 1
+        }
         
         ApiService.shared.fetchData(from: request.url()) { [weak self] (result: Result<MoviesData, Error>) in
             switch result {
             case .failure(let error):
-                print(error.localizedDescription)
+                print(error)
             case .success(let data):
-                self?.lastPage = data.totalPages
+//                self?.lastPage = data.totalPages
                 
                 for newMovie in data.results {
                     guard let movie = Movie(with: newMovie) else { continue }

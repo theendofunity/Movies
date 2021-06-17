@@ -10,14 +10,17 @@ import UIKit
 struct Movie {
     let title: String
     let posterUrl: String
-    var poster: UIImage?
     
     init?(with data: ResultData) {
-        if data.title.isEmpty || data.posterPath.isEmpty {
+        guard let title = data.title,
+              let posterUrl = data.posterPath
+        else { return nil }
+        
+        if title.isEmpty || posterUrl.isEmpty {
             return nil
         }
         
-        title = data.title
-        posterUrl = data.posterPath
+        self.title = title
+        self.posterUrl = posterUrl
     }
 }
