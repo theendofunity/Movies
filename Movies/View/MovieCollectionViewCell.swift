@@ -17,10 +17,10 @@ class MovieCollectionViewCell: UICollectionViewCell {
     var viewModel: MovieCellViewModelType? {
         didSet {
             guard let viewModel = viewModel,
-                  let urlString = viewModel.moviePosterUrl,
+                  let urlString = viewModel.moviePosterUrl(),
                   let url = URL(string: urlString)
             else { return }
-            let placeholder = UIImage(named: "moviePlaceholder")
+            let placeholder: UIImage? = UIImage(named: "moviePlaceholder")
             poster.kf.indicatorType = .activity
             poster.kf.setImage(with: url, placeholder: placeholder)
         }

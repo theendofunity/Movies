@@ -18,7 +18,6 @@ class ApiService {
     static let shared = ApiService()
     
     func fetchData<T>(from url: URL?, completion: @escaping ((Result<T, Error>) -> Void)) where T: Decodable {
-        print(url)
         guard let url = url else {
             completion(.failure(Errors.incorrectUrl))
             return
