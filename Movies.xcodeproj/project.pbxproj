@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		D8709747267BBCFB007341CD /* LoadingCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8709746267BBCFB007341CD /* LoadingCollectionViewCell.swift */; };
+		D8709749267BC330007341CD /* LoadingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8709748267BC330007341CD /* LoadingTableViewCell.swift */; };
 		D87F20E0267A4BE500974482 /* ApiKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87F20DF267A4BE500974482 /* ApiKey.swift */; };
 		D87F20E3267A4ECE00974482 /* MoviesData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87F20E2267A4ECE00974482 /* MoviesData.swift */; };
 		D87F20E5267A511C00974482 /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D87F20E4267A511C00974482 /* ApiService.swift */; };
@@ -31,6 +32,7 @@
 
 /* Begin PBXFileReference section */
 		D8709746267BBCFB007341CD /* LoadingCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingCollectionViewCell.swift; sourceTree = "<group>"; };
+		D8709748267BC330007341CD /* LoadingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingTableViewCell.swift; sourceTree = "<group>"; };
 		D87F20DF267A4BE500974482 /* ApiKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiKey.swift; sourceTree = "<group>"; };
 		D87F20E2267A4ECE00974482 /* MoviesData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoviesData.swift; sourceTree = "<group>"; };
 		D87F20E4267A511C00974482 /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiService.swift; sourceTree = "<group>"; };
@@ -69,8 +71,9 @@
 			isa = PBXGroup;
 			children = (
 				D8ED3DC826790DC30040F723 /* MovieCollectionViewCell.swift */,
-				D8ED3DD626791F200040F723 /* SearchTableViewCell.swift */,
 				D8709746267BBCFB007341CD /* LoadingCollectionViewCell.swift */,
+				D8ED3DD626791F200040F723 /* SearchTableViewCell.swift */,
+				D8709748267BC330007341CD /* LoadingTableViewCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 			files = (
 				D8ED3DD5267912620040F723 /* MovieCellViewModel.swift in Sources */,
 				D8ED3DC726790BCE0040F723 /* SearchViewController.swift in Sources */,
+				D8709749267BC330007341CD /* LoadingTableViewCell.swift in Sources */,
 				D87F20E7267A536700974482 /* Movie.swift in Sources */,
 				D87F20E5267A511C00974482 /* ApiService.swift in Sources */,
 				D8ED3DD3267912230040F723 /* MoviesViewModel.swift in Sources */,

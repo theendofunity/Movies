@@ -66,7 +66,8 @@ struct SearchRequest: Request {
 
     let path = "/3/search/movie"
     var query: String
-    
+    let page: Int
+
     func url() -> URL? {
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
@@ -74,7 +75,8 @@ struct SearchRequest: Request {
         urlComponents.path = path
         urlComponents.queryItems = [
             URLQueryItem(name: "api_key", value: apiKey),
-            URLQueryItem(name: "query", value: query)
+            URLQueryItem(name: "query", value: query),
+            URLQueryItem(name: "page", value: String(page))
         ]
         
         return urlComponents.url

@@ -8,7 +8,11 @@
 import Foundation
 
 class MoviesViewModel: MoviesViewModelType {
-    var query: String?
+    var query: String? {
+        didSet {
+            self.currentPage = 1
+        }
+    }
     var requestType: RequestType
     
     var currentPage: Int = 1
@@ -36,9 +40,7 @@ class MoviesViewModel: MoviesViewModelType {
         
         guard let request = createRequest() else { return }
         
-        if requestType != .search {
-            currentPage += 1
-        }
+        currentPage += 1
         
         ApiService.shared.fetchData(from: request.url()) { [weak self] (result: Result<MoviesData, Error>) in
             switch result {
@@ -68,7 +70,7 @@ class MoviesViewModel: MoviesViewModelType {
             guard let query = query else {
                 return nil
             }
-            request = SearchRequest(query: query)
+            request = SearchRequest(query: query, page: currentPage)
         }
         return request
     }

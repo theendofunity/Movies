@@ -1,5 +1,5 @@
 //
-//  LoadingCollectionViewCell.swift
+//  LoadingTableViewCell.swift
 //  Movies
 //
 //  Created by Дмитрий Дудкин on 18.06.2021.
@@ -7,12 +7,12 @@
 
 import UIKit
 
-class LoadingCollectionViewCell: UICollectionViewCell {
-    static let identifier = "LoadingCollectionViewCell"
+class LoadingTableViewCell: UITableViewCell {
+    static let identifier = "LoadingTableViewCell"
     let activityIndicator = UIActivityIndicatorView(style: .large)
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupLayout()
     }
     
@@ -20,7 +20,7 @@ class LoadingCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //    MARK: - UISetup
+//    MARK:  - UISetup
     
     private func setupLayout() {
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false

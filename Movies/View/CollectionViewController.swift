@@ -72,8 +72,8 @@ class CollectionViewController: UICollectionViewController {
     
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
         if indexPath.item >= viewModel.numberOfItems() {
-            DispatchQueue.global().asyncAfter(deadline: .now() + 3) {
-                self.loadMoreData()
+            DispatchQueue.global().asyncAfter(deadline: .now() + 3) { [weak self] in
+                self?.loadMoreData()
             }
         }
     }

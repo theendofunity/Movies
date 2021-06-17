@@ -40,6 +40,7 @@ class SearchViewController: UITableViewController {
         definesPresentationContext = true
         
         self.tableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.identifier)
+        self.tableView.register(LoadingTableViewCell.self, forCellReuseIdentifier: LoadingTableViewCell.identifier)
         
         setupLayout()
     }
@@ -47,10 +48,23 @@ class SearchViewController: UITableViewController {
     //    MARK:  - TableViewDelegate
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfItems()
+        let numberOfItems = viewModel.numberOfItems()
+        if numberOfItems == 0 { //data did not loading now
+            return numberOfItems
+        }
+        return viewModel.numberOfItems() + 1 // +1 -- loading cell
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if indexPath.item == viewModel.numberOfItems() {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: LoadingTableViewCell.identifier, for: indexPath) as? LoadingTableViewCell else { return UITableViewCell() }
+            print("loading cell")
+            cell.activityIndicator.startAnimating()
+            
+            return cell
+        }
+        
         guard let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier) as? SearchTableViewCell else { return UITableViewCell() }
         
         let cellViewModel = viewModel.cellViewModel(for: indexPath)
@@ -63,11 +77,27 @@ class SearchViewController: UITableViewController {
         return 200
     }
     
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row >= viewModel.numberOfItems() {
+            DispatchQueue.global().asyncAfter(deadline: .now() + 3) { [weak self] in
+                self?.loadMore()
+            }
+        }
+    }
+    
 //    MARK: - UISetup
     
     private func setupLayout() {
         tableView.tableFooterView = UIView()
         tableView.tableHeaderView = searchController.searchBar
+    }
+    
+    private func loadMore() {
+        viewModel.loadMovies { [weak self] in
+            DispatchQueue.main.async {
+                self?.tableView.reloadData()
+            }
+        }
     }
 }
 
@@ -83,15 +113,11 @@ extension SearchViewController: UISearchResultsUpdating {
     
     @objc private func search() {
         if !searchBarIsEmpty {
-            viewModel.query = searchController.searchBar.text!
+            viewModel.query = searchController.searchBar.text
             
             viewModel.movies.removeAll()
             
-            viewModel.loadMovies { [weak self] in
-                DispatchQueue.main.async {
-                    self?.tableView.reloadData()
-                }
-            }
+            loadMore()
         }
     }
 }
