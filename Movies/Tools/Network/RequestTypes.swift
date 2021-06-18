@@ -10,6 +10,7 @@ import Foundation
 let baseUrl = "api.themoviedb.org"
 
 enum RequestType {
+    case none
     case popular
     case top
     case search

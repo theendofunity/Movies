@@ -71,6 +71,8 @@ class MoviesViewModel: MoviesViewModelType {
                 return nil
             }
             request = SearchRequest(query: query, page: currentPage)
+        case .none:
+            return nil
         }
         return request
     }

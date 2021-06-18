@@ -19,7 +19,18 @@ class MovieCellViewModel: MovieCellViewModelType {
     }
     
     func changeFavoriteState() {
-        movie.isFavorite = !movie.isFavorite
+        
+        let isFavorite = !movie.isFavorite
+        
+        if isFavorite {
+            movie.isFavorite = isFavorite
+            RealmManager.saveFavoriteMovie(movie: movie)
+        }
+//        else {
+//            RealmManager.removeFromFavorite(movie: movie)
+//            movie.isFavorite = isFavorite
+//        }
+        
     }
     
     func title() -> String? {
