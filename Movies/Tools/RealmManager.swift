@@ -11,21 +11,39 @@ import RealmSwift
 let realm = try! Realm()
 
 class RealmManager {
-    static func loadFavoriteMovies() -> Results<Movie> {
-        let movies = realm.objects(Movie.self)
+    
+    static let movies = loadFavoriteMovies()
+    
+    static func loadFavoriteMovies() -> Results<DataBaseMovie> {
+        let movies = realm.objects(DataBaseMovie.self)
         return movies
     }
     
-    static func saveFavoriteMovie(movie: Movie) {
+    static func isMovieInDataBase(title: String) -> Bool {
+        return movies.contains { movie in
+            return movie.title == title
+        }
+    }
+    
+    static func saveFavoriteMovie(movie: DataBaseMovie) {
         try? realm.write {
             realm.add(movie)
         }
     }
     
-    static func removeFromFavorite(movie: Movie) {
+    static func removeFromFavorite(movie: DataBaseMovie?) {
         try? realm.write({
+            guard let movie = movie else { return }
             realm.delete(movie)
         })
+    }
+    
+    static func removeMovieWithTitle(title: String) {
+        let movie = movies.first { movie in
+            movie.title == title
+        }
+        removeFromFavorite(movie: movie)
+//        realm.delete(movies.)
     }
     
     static func write(completion: () -> Void) {

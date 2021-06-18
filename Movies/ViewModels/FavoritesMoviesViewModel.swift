@@ -9,20 +9,18 @@ import Foundation
 import RealmSwift
 
 class FavoritesMoviesViewModel {
-    var movies: Results<Movie> = RealmManager.loadFavoriteMovies()
+//    var movies: Results<DataBaseMovie> = RealmManager.loadFavoriteMovies()
     var updateCompletion: (() -> Void)?
     var observer: NotificationToken?
         
     init() {
-        observer = movies.observe { [weak self] changes in
+        observer = RealmManager.movies.observe { [weak self] changes in
             switch changes {
             case .initial:
                 self?.updateCompletion?()
-                print(self?.movies.count)
                 break
             case .update:
                 self?.updateCompletion?()
-                print(self?.movies.count)
                 break
             case .error:
                 break
@@ -30,11 +28,14 @@ class FavoritesMoviesViewModel {
     }
     
     func numberOfItems() -> Int {
-        return movies.count
+        return RealmManager.movies.count
     }
     
     func cellViewModel(for indexPath: IndexPath) -> MovieCellViewModelType? {
-        let cellModel = MovieCellViewModel(movie: movies[indexPath.item])
+        let dataBaseMovie = RealmManager.movies[indexPath.item]
+        let movie = Movie(with: dataBaseMovie)
+        
+        let cellModel = MovieCellViewModel(movie: movie)
         return cellModel
     }
     

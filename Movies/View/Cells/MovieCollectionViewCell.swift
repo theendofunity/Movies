@@ -56,12 +56,13 @@ class MovieCollectionViewCell: UICollectionViewCell {
         poster.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         poster.topAnchor.constraint(equalTo: topAnchor).isActive = true
         poster.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        
-        changeFavoriteState()
     }
     
     @objc private func changeFavoriteState() {
-        viewModel?.changeFavoriteState()
+        guard let viewModel = viewModel else { return }
+        
+        viewModel.changeFavoriteState()
+        
         updateFavoriteButton()
     }
     

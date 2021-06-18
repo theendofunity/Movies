@@ -27,4 +27,12 @@ class Movie: Object {
         self.title = title
         self.posterUrl = posterUrl
     }
+    
+    convenience init(with dataBase: DataBaseMovie) {
+        self.init()
+
+        self.title = dataBase.title
+        self.posterUrl = dataBase.posterUrl
+        self.isFavorite = true
+    }
 }
