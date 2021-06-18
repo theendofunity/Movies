@@ -78,7 +78,7 @@ class SearchViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row >= viewModel.numberOfItems() {
+        if indexPath.row == viewModel.numberOfItems() {
             DispatchQueue.global().asyncAfter(deadline: .now() + 3) { [weak self] in
                 self?.loadMore()
             }
