@@ -13,6 +13,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "MovieCollectionViewCell"
     let poster = UIImageView()
+    let favorite = UIButton()
     
     var viewModel: MovieCellViewModelType? {
         didSet {
@@ -23,6 +24,7 @@ class MovieCollectionViewCell: UICollectionViewCell {
             let placeholder: UIImage? = UIImage(named: "moviePlaceholder")
             poster.kf.indicatorType = .activity
             poster.kf.setImage(with: url, placeholder: placeholder)
+            updateFavoriteButton()
         }
     }
     
@@ -44,9 +46,32 @@ class MovieCollectionViewCell: UICollectionViewCell {
         
         addSubview(poster)
         
+        favorite.addTarget(self, action: #selector(changeFavoriteState), for: .touchUpInside)
+        favorite.isUserInteractionEnabled = true
+        
+        favorite.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(favorite)
+        
         poster.leftAnchor.constraint(equalTo: leftAnchor).isActive = true
         poster.rightAnchor.constraint(equalTo: rightAnchor).isActive = true
         poster.topAnchor.constraint(equalTo: topAnchor).isActive = true
         poster.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+        
+        changeFavoriteState()
+    }
+    
+    @objc private func changeFavoriteState() {
+        viewModel?.changeFavoriteState()
+        updateFavoriteButton()
+    }
+    
+    private func updateFavoriteButton() {
+        guard let viewModel = viewModel else { return }
+
+        if viewModel.isFavorite() {
+            favorite.setImage(UIImage(systemName: "star.fill"), for: .normal)
+        } else {
+            favorite.setImage(UIImage(systemName: "star"), for: .normal)
+        }
     }
 }

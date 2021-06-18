@@ -14,6 +14,14 @@ class MovieCellViewModel: MovieCellViewModelType {
         self.movie = movie
     }
     
+    func isFavorite() -> Bool {
+        return movie.isFavorite
+    }
+    
+    func changeFavoriteState() {
+        movie.isFavorite = !movie.isFavorite
+    }
+    
     func title() -> String? {
         return movie.title
     }

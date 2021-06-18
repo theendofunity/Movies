@@ -10,6 +10,7 @@ import UIKit
 struct Movie {
     let title: String
     let posterUrl: String
+    var isFavorite = false
     
     init?(with data: ResultData) {
         guard let title = data.title,
