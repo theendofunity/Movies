@@ -16,6 +16,7 @@ class SearchTableViewCell: UITableViewCell {
     
     let poster = UIImageView()
     let title = UILabel()
+    let favorite = UIButton()
     
     var viewModel: MovieCellViewModelType? {
         didSet {
@@ -27,6 +28,7 @@ class SearchTableViewCell: UITableViewCell {
             poster.kf.indicatorType = .activity
             poster.kf.setImage(with: url, placeholder: placeholder)
             title.text = viewModel.title()
+            updateFavoriteButton()
         }
     }
     
@@ -50,17 +52,35 @@ class SearchTableViewCell: UITableViewCell {
         title.numberOfLines = 0
         title.translatesAutoresizingMaskIntoConstraints = false
         
-        let stackview = UIStackView(arrangedSubviews: [poster, title])
+        favorite.addTarget(self, action: #selector(changeFavoriteState), for: .touchUpInside)
+        
+        let stackview = UIStackView(arrangedSubviews: [poster, title, favorite])
         stackview.axis = .horizontal
         stackview.spacing = 20
         stackview.distribution = .fillEqually
+        stackview.alignment = .top
         
         stackview.translatesAutoresizingMaskIntoConstraints = false
-        addSubview(stackview)
+        contentView.addSubview(stackview)
         
-        stackview.topAnchor.constraint(equalTo: topAnchor, constant: 8).isActive = true
-        stackview.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8).isActive = true
-        stackview.leftAnchor.constraint(equalTo: leftAnchor, constant: 8).isActive = true
-        stackview.rightAnchor.constraint(equalTo: rightAnchor, constant: -8).isActive = true
+        stackview.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8).isActive = true
+        stackview.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8).isActive = true
+        stackview.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 8).isActive = true
+        stackview.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -8).isActive = true
+    }
+    
+    @objc private func changeFavoriteState() {
+        viewModel?.changeFavoriteState()
+        updateFavoriteButton()
+    }
+    
+    private func updateFavoriteButton() {
+        guard let viewModel = viewModel else { return }
+
+        if viewModel.isFavorite() {
+            favorite.setImage(UIImage(systemName: "star.fill"), for: .normal)
+        } else {
+            favorite.setImage(UIImage(systemName: "star"), for: .normal)
+        }
     }
 }
