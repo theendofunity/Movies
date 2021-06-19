@@ -18,6 +18,7 @@ class TabBarViewController: UITabBarController {
         let popularViewModel = MoviesViewModel(type: .popular)
         let topViewModel = MoviesViewModel(type: .top)
         let searchViewModel = MoviesViewModel(type: .search)
+        let favoriteViewModel = FavoritesMoviesViewModel()
         
         viewControllers = [
             createTabBarItem(title: "Popular",
@@ -28,7 +29,10 @@ class TabBarViewController: UITabBarController {
                              viewController: CollectionViewController(viewModel: topViewModel)),
             createTabBarItem(title: "Search",
                              icon: nil,
-                             viewController: SearchViewController(viewModel: searchViewModel))
+                             viewController: SearchViewController(viewModel: searchViewModel)),
+            createTabBarItem(title: "Favorite",
+                             icon: nil,
+                             viewController: FavoritesCollectionViewController(viewModel: favoriteViewModel))
         ]
     }
     

@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import RealmSwift
 
-struct Movie {
-    let title: String
-    let posterUrl: String
+class Movie: Object {
+    @objc dynamic var title: String = ""
+    @objc dynamic var posterUrl: String = ""
+    @objc dynamic var isFavorite = false
     
-    init?(with data: ResultData) {
+    convenience init?(with data: ResultData) {
         guard let title = data.title,
               let posterUrl = data.posterPath
         else { return nil }
@@ -20,7 +22,17 @@ struct Movie {
             return nil
         }
         
+        self.init()
+        
         self.title = title
         self.posterUrl = posterUrl
+    }
+    
+    convenience init(with dataBase: DataBaseMovie) {
+        self.init()
+
+        self.title = dataBase.title
+        self.posterUrl = dataBase.posterUrl
+        self.isFavorite = true
     }
 }

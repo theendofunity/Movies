@@ -90,6 +90,7 @@ class SearchViewController: UITableViewController {
     private func setupLayout() {
         tableView.tableFooterView = UIView()
         tableView.tableHeaderView = searchController.searchBar
+        tableView.allowsSelection = false
     }
     
     private func loadMore() {

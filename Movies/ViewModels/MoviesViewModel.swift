@@ -51,6 +51,13 @@ class MoviesViewModel: MoviesViewModelType {
                 
                 for newMovie in data.results {
                     guard let movie = Movie(with: newMovie) else { continue }
+                    
+                    DispatchQueue.main.async { //set favorite state
+                        if RealmManager.isMovieInDataBase(title: movie.title) {
+                            movie.isFavorite = true
+                        }
+                    }
+                    
                     self?.movies.append(movie)
                 }
                 completion()
@@ -71,6 +78,8 @@ class MoviesViewModel: MoviesViewModelType {
                 return nil
             }
             request = SearchRequest(query: query, page: currentPage)
+        case .none:
+            return nil
         }
         return request
     }
