@@ -25,6 +25,9 @@ class MovieCollectionViewCell: UICollectionViewCell {
             poster.kf.indicatorType = .activity
             poster.kf.setImage(with: url, placeholder: placeholder)
             updateFavoriteButton()
+            self.viewModel?.updateCompletion = { [weak self] in
+                self?.updateFavoriteButton()
+            }
         }
     }
     

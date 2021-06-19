@@ -6,12 +6,25 @@
 //
 
 import UIKit
+import RealmSwift
 
 class MovieCellViewModel: MovieCellViewModelType {
     var movie: Movie
     
+    var updateCompletion: (() -> Void)?
+    var observer: NotificationToken?
+    
     init(movie: Movie) {
         self.movie = movie
+        observer = RealmManager.movies.observe { [weak self] changes in
+            switch changes {
+            case .update:
+                movie.isFavorite = RealmManager.isMovieInDataBase(title: movie.title)
+                self?.updateCompletion?()
+            default:
+                break
+            }
+        }
     }
     
     func isFavorite() -> Bool {

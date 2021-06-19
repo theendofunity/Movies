@@ -9,7 +9,8 @@ import UIKit
 
 protocol MovieCellViewModelType {
     var movie: Movie { get set }
-    
+    var updateCompletion: (() -> Void)? { get set }
+
     func title() -> String?
     func moviePosterUrl() -> String?
     

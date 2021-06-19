@@ -24,7 +24,8 @@ class FavoritesMoviesViewModel {
                 break
             case .error:
                 break
-            }    }
+            }
+        }
     }
     
     func numberOfItems() -> Int {
