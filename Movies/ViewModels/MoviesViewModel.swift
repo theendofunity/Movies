@@ -75,7 +75,6 @@ class MoviesViewModel: MoviesViewModelType {
                 completion()
             }
         }
-        print(lastPage)
     }
     
     private func createRequest()  -> Request?{

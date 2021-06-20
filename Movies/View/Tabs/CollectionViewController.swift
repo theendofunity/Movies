@@ -10,6 +10,8 @@ import UIKit
 class CollectionViewController: UICollectionViewController {
     //    MARK: - Properties
     
+    let inset: CGFloat = 20
+
     let viewModel: MoviesViewModelType
     
     //    MARK: - Initializers
@@ -29,6 +31,7 @@ class CollectionViewController: UICollectionViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupLayout()
         
         // Register cell classes
@@ -61,7 +64,7 @@ class CollectionViewController: UICollectionViewController {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LoadingCollectionViewCell.identifier, for: indexPath) as? LoadingCollectionViewCell else { return UICollectionViewCell() }
             
             cell.activityIndicator.startAnimating()
-
+            
             return cell
         }
         
@@ -69,7 +72,7 @@ class CollectionViewController: UICollectionViewController {
         
         let cellViewModel = viewModel.cellViewModel(for: indexPath)
         cell.viewModel = cellViewModel
-
+        
         return cell
     }
     
@@ -82,21 +85,13 @@ class CollectionViewController: UICollectionViewController {
     }
     
     // MARK: - UI Configuration
-    
+        
     private func setupLayout() {
-        collectionView.backgroundColor = .white
-        let itemsAtRow: CGFloat = 2
-        let inset: CGFloat = 20
-
-        guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
-        layout.sectionInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
-        layout.minimumInteritemSpacing = inset
-        layout.minimumLineSpacing = inset
-
-        let paddingWidth = inset * (itemsAtRow + 1)
-        let availableWidth = collectionView.frame.width - paddingWidth
-        let widthForItem = availableWidth / itemsAtRow
-        layout.itemSize = CGSize(width: widthForItem, height: widthForItem)
+                collectionView.backgroundColor = .white
+                guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
+                layout.sectionInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
+                layout.minimumInteritemSpacing = inset
+                layout.minimumLineSpacing = inset
     }
     
     //    MARK: - Data loading
@@ -106,6 +101,25 @@ class CollectionViewController: UICollectionViewController {
             DispatchQueue.main.async {
                 self?.collectionView.reloadData()
             }
+        }
+    }
+}
+
+
+extension CollectionViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var itemsAtRow: CGFloat
+        
+        itemsAtRow = indexPath.section == 0 ? 2 : 1
+        
+        let paddingWidth = inset * (itemsAtRow + 1)
+        let availableWidth = collectionView.frame.width - paddingWidth
+        let widthForItem = availableWidth / itemsAtRow
+        
+        if indexPath.section == 0 {
+            return CGSize(width: widthForItem, height: widthForItem)
+        } else {
+            return CGSize(width: widthForItem, height: 50)
         }
     }
 }
