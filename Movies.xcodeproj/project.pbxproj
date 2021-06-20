@@ -115,6 +115,16 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		D8872B3E267E50E9000874BE /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				D8ED3DC426790BB80040F723 /* CollectionViewController.swift */,
+				D8ED3DC626790BCE0040F723 /* SearchViewController.swift */,
+				D8CC0DD4267CB820003E69D6 /* FavoritesCollectionViewController.swift */,
+			);
+			path = Tabs;
+			sourceTree = "<group>";
+		};
 		D8CC0DDB267CBA86003E69D6 /* Tools */ = {
 			isa = PBXGroup;
 			children = (
@@ -162,9 +172,7 @@
 			children = (
 				D8ED3DB7267908130040F723 /* LaunchScreen.storyboard */,
 				D8ED3DC2267909F30040F723 /* TabBarViewController.swift */,
-				D8ED3DC426790BB80040F723 /* CollectionViewController.swift */,
-				D8ED3DC626790BCE0040F723 /* SearchViewController.swift */,
-				D8CC0DD4267CB820003E69D6 /* FavoritesCollectionViewController.swift */,
+				D8872B3E267E50E9000874BE /* Tabs */,
 				D8709745267BBCD3007341CD /* Cells */,
 			);
 			path = View;

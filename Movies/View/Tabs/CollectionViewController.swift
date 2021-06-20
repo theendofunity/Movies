@@ -41,24 +41,27 @@ class CollectionViewController: UICollectionViewController {
     // MARK: UICollectionViewDataSource
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        if viewModel.numberOfItems() == 0 {
+            return 1
+        }
+        
+        return 2
     }
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let numberOfItems = viewModel.numberOfItems()
-        if numberOfItems == 0 { //data did not loading now
-            return numberOfItems
+        
+        if section == 0 {
+            return viewModel.numberOfItems()
         }
-        return viewModel.numberOfItems() + 1 // +1 -- loading cell
+        return 1
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-       
-        if indexPath.item == viewModel.numberOfItems() {
+        if indexPath.section == 1 {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LoadingCollectionViewCell.identifier, for: indexPath) as? LoadingCollectionViewCell else { return UICollectionViewCell() }
-            print("loading cell")
-            cell.activityIndicator.startAnimating()
             
+            cell.activityIndicator.startAnimating()
+
             return cell
         }
         
@@ -71,24 +74,25 @@ class CollectionViewController: UICollectionViewController {
     }
     
     override func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        if indexPath.item >= viewModel.numberOfItems() {
+        if indexPath.section == 1 {
             DispatchQueue.global().asyncAfter(deadline: .now() + 3) { [weak self] in
                 self?.loadMoreData()
             }
         }
     }
+    
     // MARK: - UI Configuration
     
     private func setupLayout() {
         collectionView.backgroundColor = .white
         let itemsAtRow: CGFloat = 2
         let inset: CGFloat = 20
-        
+
         guard let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout else { return }
         layout.sectionInset = UIEdgeInsets(top: inset, left: inset, bottom: inset, right: inset)
         layout.minimumInteritemSpacing = inset
         layout.minimumLineSpacing = inset
-        
+
         let paddingWidth = inset * (itemsAtRow + 1)
         let availableWidth = collectionView.frame.width - paddingWidth
         let widthForItem = availableWidth / itemsAtRow

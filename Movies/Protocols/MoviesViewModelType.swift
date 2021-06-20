@@ -17,6 +17,6 @@ protocol MoviesViewModelType {
     
     func numberOfItems() -> Int
     func cellViewModel(for indexPath: IndexPath) -> MovieCellViewModelType?
-    
+    func isLastPage() -> Bool
     func loadMovies(completion: @escaping (() -> Void))
 }

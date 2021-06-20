@@ -8,19 +8,28 @@
 import Foundation
 
 class MoviesViewModel: MoviesViewModelType {
+//    MARK: - Properties
+    
     var query: String? {
         didSet {
-            self.currentPage = 1
+            self.currentPage = 0
         }
     }
     var requestType: RequestType
     
-    var currentPage: Int = 1
+    var currentPage: Int = 0
     var lastPage: Int = 10
     var movies: [Movie] = []
     
+//    MARK: - Initializers
+    
     init(type: RequestType) {
         self.requestType = type
+    }
+    
+//    MARK: - Cells params
+    func isLastPage() -> Bool {
+        return currentPage == lastPage
     }
     
     func numberOfItems() -> Int {
@@ -32,15 +41,18 @@ class MoviesViewModel: MoviesViewModelType {
         return cellModel
     }
     
+//    MARK: - Loading
+    
     func loadMovies(completion: @escaping (() -> Void)) {
-        guard currentPage <= lastPage else {
+        if isLastPage() {
             print("Last page")
+            completion()
             return
         }
         
-        guard let request = createRequest() else { return }
-        
         currentPage += 1
+
+        guard let request = createRequest() else { return }
         
         ApiService.shared.fetchData(from: request.url()) { [weak self] (result: Result<MoviesData, Error>) in
             switch result {
@@ -63,6 +75,7 @@ class MoviesViewModel: MoviesViewModelType {
                 completion()
             }
         }
+        print(lastPage)
     }
     
     private func createRequest()  -> Request?{

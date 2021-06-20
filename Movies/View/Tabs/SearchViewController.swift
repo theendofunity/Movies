@@ -17,6 +17,7 @@ class SearchViewController: UITableViewController {
         return text.isEmpty
     }
     var searchDelayTimer: Timer?
+    var loadingInProcess = false
     
     //    MARK: - Initializers
 
@@ -41,25 +42,31 @@ class SearchViewController: UITableViewController {
         
         self.tableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.identifier)
         self.tableView.register(LoadingTableViewCell.self, forCellReuseIdentifier: LoadingTableViewCell.identifier)
-        
+    
         setupLayout()
     }
     
     //    MARK:  - TableViewDelegate
     
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        let numberOfItems = viewModel.numberOfItems()
-        if numberOfItems == 0 { //data did not loading now
-            return numberOfItems
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        if viewModel.numberOfItems() == 0 || viewModel.isLastPage() {
+            return 1
         }
-        return viewModel.numberOfItems() + 1 // +1 -- loading cell
+        
+        return 2
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            return viewModel.numberOfItems()
+        }
+        return 1
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        if indexPath.item == viewModel.numberOfItems() {
+        if indexPath.section == 1 {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: LoadingTableViewCell.identifier, for: indexPath) as? LoadingTableViewCell else { return UITableViewCell() }
-            print("loading cell")
+
             cell.activityIndicator.startAnimating()
             
             return cell
@@ -74,11 +81,17 @@ class SearchViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 1 {
+            return 50
+        }
+        
         return 200
     }
     
-    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if indexPath.row == viewModel.numberOfItems() {
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let indexPath = tableView.indexPathsForVisibleRows?.last
+        if indexPath?.section == 1  && !loadingInProcess {
+            loadingInProcess = true
             DispatchQueue.global().asyncAfter(deadline: .now() + 3) { [weak self] in
                 self?.loadMore()
             }
@@ -97,15 +110,13 @@ class SearchViewController: UITableViewController {
         viewModel.loadMovies { [weak self] in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
+                self?.loadingInProcess = false
             }
         }
     }
 }
 
-
 extension SearchViewController: UISearchResultsUpdating {
-    //    MARK:  - Search result
-    
     func updateSearchResults(for searchController: UISearchController) {
         searchDelayTimer?.invalidate()
         
