@@ -22,16 +22,16 @@ class TabBarViewController: UITabBarController {
         
         viewControllers = [
             createTabBarItem(title: "Popular",
-                             icon: nil,
+                             icon: UIImage(systemName: "ticket"),
                              viewController: CollectionViewController(viewModel: popularViewModel)),
             createTabBarItem(title: "Top",
-                             icon: nil,
+                             icon: UIImage(systemName: "ticket.fill"),
                              viewController: CollectionViewController(viewModel: topViewModel)),
             createTabBarItem(title: "Search",
-                             icon: nil,
+                             icon: UIImage(systemName: "magnifyingglass"),
                              viewController: SearchViewController(viewModel: searchViewModel)),
             createTabBarItem(title: "Favorite",
-                             icon: nil,
+                             icon: UIImage(systemName: "star"),
                              viewController: FavoritesCollectionViewController(viewModel: favoriteViewModel))
         ]
     }
