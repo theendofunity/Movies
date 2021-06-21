@@ -7,9 +7,9 @@
 
 import UIKit
 
-protocol MovieCellViewModelType {
+protocol MovieCellViewModelType: Observable {
     var movie: Movie { get set }
-    var updateCompletion: (() -> Void)? { get set }
+    var uiUpdateCompletion: (() -> Void)? { get set }
 
     func title() -> String?
     func moviePosterUrl() -> String?

@@ -54,7 +54,7 @@ class MoviesViewModel: MoviesViewModelType {
 
         guard let request = createRequest() else { return }
         
-        ApiService.shared.fetchData(from: request.url()) { [weak self] (result: Result<MoviesData, Error>) in
+        ApiService.fetchData(from: request.url()) { [weak self] (result: Result<MoviesData, Error>) in
             switch result {
             case .failure(let error):
                 print(error)
@@ -65,7 +65,7 @@ class MoviesViewModel: MoviesViewModelType {
                     guard let movie = Movie(with: newMovie) else { continue }
                     
                     DispatchQueue.main.async { //set favorite state
-                        if RealmManager.isMovieInDataBase(title: movie.title) {
+                        if RealmManager.shared.isMovieInDataBase(title: movie.title) {
                             movie.isFavorite = true
                         }
                     }

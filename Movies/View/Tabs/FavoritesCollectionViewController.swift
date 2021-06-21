@@ -44,10 +44,6 @@ class FavoritesCollectionViewController: UICollectionViewController {
         
     }
     
-//    override func viewWillAppear(_ animated: Bool) {
-//        collectionView.reloadData()
-//    }
-    
     // MARK: UICollectionViewDataSource
     
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -64,8 +60,6 @@ class FavoritesCollectionViewController: UICollectionViewController {
         let cellViewModel = viewModel.cellViewModel(for: indexPath)
         cell.viewModel = cellViewModel
         
-//        cell.favorite.addTarget(self, action: #selector(update), for: .touchUpInside)
-
         return cell
     }
     

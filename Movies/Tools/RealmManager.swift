@@ -8,45 +8,74 @@
 import Foundation
 import RealmSwift
 
-let realm = try! Realm()
-
 class RealmManager {
+    let realm = try! Realm()
+
+    static let shared: RealmManager = RealmManager()
     
-    static let movies = loadFavoriteMovies()
+    var movies: Results<DataBaseMovie>?
+    var token: NotificationToken?
     
-    static func loadFavoriteMovies() -> Results<DataBaseMovie> {
+    
+    var observers = [Observable]()
+    
+    init() {
+        self.movies = self.loadFavoriteMovies()
+
+        token = movies?.observe { [weak self] changes in
+               switch changes {
+               case .update:
+                   guard let self = self else { return }
+                   for observer in self.observers {
+                       observer.updateCompletion?()
+                   }
+               default:
+                   break
+               }
+           }
+        
+    }
+    
+    func addObserver(observer: Observable) {
+        observers.append(observer)
+    }
+    
+    func loadFavoriteMovies() -> Results<DataBaseMovie> {
         let movies = realm.objects(DataBaseMovie.self)
         return movies
     }
     
-    static func isMovieInDataBase(title: String) -> Bool {
+    func isMovieInDataBase(title: String) -> Bool {
+        guard let movies = movies else { return false }
+        
         return movies.contains { movie in
             return movie.title == title
         }
     }
     
-    static func saveFavoriteMovie(movie: DataBaseMovie) {
+    func saveFavoriteMovie(movie: DataBaseMovie) {
         try? realm.write {
             realm.add(movie)
         }
     }
     
-    static func removeFromFavorite(movie: DataBaseMovie?) {
+    func removeFromFavorite(movie: DataBaseMovie?) {
         try? realm.write({
             guard let movie = movie else { return }
             realm.delete(movie)
         })
     }
     
-    static func removeMovieWithTitle(title: String) {
-        let movie = movies.first { movie in
+    func removeMovieWithTitle(title: String) {
+        let movie = movies?.first { movie in
             movie.title == title
         }
-        removeFromFavorite(movie: movie)
-//        realm.delete(movies.)
+        if movie != nil {
+            removeFromFavorite(movie: movie)
+        }
     }
     
-    static func write(completion: () -> Void) {
+    func write(completion: () -> Void) {
         try? realm.write {
             completion()
         }

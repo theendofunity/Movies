@@ -8,23 +8,21 @@
 import UIKit
 import RealmSwift
 
-class MovieCellViewModel: MovieCellViewModelType {
+class MovieCellViewModel: MovieCellViewModelType, Observable {
     var movie: Movie
     
     var updateCompletion: (() -> Void)?
-    var observer: NotificationToken?
+    var uiUpdateCompletion: (() -> Void)?
     
     init(movie: Movie) {
         self.movie = movie
-        observer = RealmManager.movies.observe { [weak self] changes in
-            switch changes {
-            case .update:
-                movie.isFavorite = RealmManager.isMovieInDataBase(title: movie.title)
-                self?.updateCompletion?()
-            default:
-                break
-            }
+        
+        updateCompletion = { [weak self] in
+            movie.isFavorite = RealmManager.shared.isMovieInDataBase(title: movie.title)
+            self?.uiUpdateCompletion?()
         }
+        
+        RealmManager.shared.addObserver(observer: self)
     }
     
     func isFavorite() -> Bool {
@@ -36,9 +34,9 @@ class MovieCellViewModel: MovieCellViewModelType {
         
         if movie.isFavorite {
             let dataBaseMovie = DataBaseMovie(title: movie.title, posterUrl: movie.posterUrl)
-            RealmManager.saveFavoriteMovie(movie: dataBaseMovie)
+            RealmManager.shared.saveFavoriteMovie(movie: dataBaseMovie)
         } else {
-            RealmManager.removeMovieWithTitle(title: movie.title)
+            RealmManager.shared.removeMovieWithTitle(title: movie.title)
         }
     }
     
