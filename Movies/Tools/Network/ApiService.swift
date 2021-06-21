@@ -13,20 +13,18 @@ enum Errors: Error {
     case decodeError
 }
 
-
 class ApiService {
     static func fetchData<T>(from url: URL?, completion: @escaping ((Result<T, Error>) -> Void)) where T: Decodable {
-        print(url)
         guard let url = url else {
             completion(.failure(Errors.incorrectUrl))
             return
         }
-        
+
         let task = URLSession.shared.dataTask(with: url) { data, _, error in
             if error != nil {
                 completion(.failure(error!))
             }
-            
+
             guard let data = data else {
                 completion(.failure(Errors.emptyData))
                 return
@@ -36,9 +34,9 @@ class ApiService {
             } else {
                 completion(.failure(Errors.decodeError))
             }
-            
+
         }
-        
+
         task.resume()
     }
 }

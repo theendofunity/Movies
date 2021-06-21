@@ -79,6 +79,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		46BCE59565807454A491D172 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		D8709745267BBCD3007341CD /* Cells */ = {
 			isa = PBXGroup;
 			children = (
@@ -141,6 +148,7 @@
 			children = (
 				D8ED3DAB267908120040F723 /* Movies */,
 				D8ED3DAA267908120040F723 /* Products */,
+				46BCE59565807454A491D172 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -218,6 +226,7 @@
 				D8ED3DA5267908120040F723 /* Sources */,
 				D8ED3DA6267908120040F723 /* Frameworks */,
 				D8ED3DA7267908120040F723 /* Resources */,
+				D8531C6C2680E19B00C03732 /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -279,6 +288,27 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D8531C6C2680E19B00C03732 /* Run Script */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Run Script";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\n\nif which swiftlint; then\n    swiftlint autocorrect && swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\n  exit 1\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D8ED3DA5267908120040F723 /* Sources */ = {

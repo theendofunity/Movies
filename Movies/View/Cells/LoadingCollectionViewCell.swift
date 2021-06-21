@@ -10,18 +10,18 @@ import UIKit
 class LoadingCollectionViewCell: UICollectionViewCell {
     static let identifier = "LoadingCollectionViewCell"
     let activityIndicator = UIActivityIndicatorView(style: .large)
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupLayout()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    //    MARK: - UISetup
-    
+
+    // MARK: - UISetup
+
     private func setupLayout() {
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         addSubview(activityIndicator)

@@ -8,78 +8,78 @@
 import Foundation
 
 class MoviesViewModel: MoviesViewModelType {
-//    MARK: - Properties
-    
+// MARK: - Properties
+
     var query: String? {
         didSet {
             self.currentPage = 0
         }
     }
     var requestType: RequestType
-    
+
     var currentPage: Int = 0
     var lastPage: Int = 10
     var movies: [Movie] = []
-    
-//    MARK: - Initializers
-    
+
+// MARK: - Initializers
+
     init(type: RequestType) {
         self.requestType = type
     }
-    
-//    MARK: - Cells params
+
+// MARK: - Cells params
     func isLastPage() -> Bool {
         return currentPage == lastPage
     }
-    
+
     func numberOfItems() -> Int {
         return movies.count
     }
-    
+
     func cellViewModel(for indexPath: IndexPath) -> MovieCellViewModelType? {
         let cellModel = MovieCellViewModel(movie: movies[indexPath.item])
         return cellModel
     }
-    
-//    MARK: - Loading
-    
+
+// MARK: - Loading
+
     func loadMovies(completion: @escaping (() -> Void)) {
         if isLastPage() {
             print("Last page")
             completion()
             return
         }
-        
+
         currentPage += 1
 
         guard let request = createRequest() else { return }
-        
+
         ApiService.fetchData(from: request.url()) { [weak self] (result: Result<MoviesData, Error>) in
             switch result {
             case .failure(let error):
                 print(error)
             case .success(let data):
                 self?.lastPage = data.totalPages
-                
+
                 for newMovie in data.results {
                     guard let movie = Movie(with: newMovie) else { continue }
-                    
-                    DispatchQueue.main.async { //set favorite state
+
+                    DispatchQueue.main.async { // set favorite state
                         if RealmManager.shared.isMovieInDataBase(title: movie.title) {
                             movie.isFavorite = true
                         }
                     }
-                    
+
                     self?.movies.append(movie)
                 }
                 completion()
             }
         }
     }
-    
-    private func createRequest()  -> Request?{
+
+    private func createRequest() -> Request? {
         let request: Request
-        
+
         switch requestType {
         case .popular:
             request = PopularRequest(page: currentPage)

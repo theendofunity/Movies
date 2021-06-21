@@ -12,22 +12,22 @@ class Movie: Object {
     @objc dynamic var title: String = ""
     @objc dynamic var posterUrl: String = ""
     @objc dynamic var isFavorite = false
-    
+
     convenience init?(with data: ResultData) {
         guard let title = data.title,
               let posterUrl = data.posterPath
         else { return nil }
-        
+
         if title.isEmpty || posterUrl.isEmpty {
             return nil
         }
-        
+
         self.init()
-        
+
         self.title = title
         self.posterUrl = posterUrl
     }
-    
+
     convenience init(with dataBase: DataBaseMovie) {
         self.init()
 

@@ -23,7 +23,7 @@ struct MoviesData: Codable {
 struct ResultData: Codable {
     let title: String?
     let posterPath: String?
-    
+
     enum CodingKeys: String, CodingKey {
         case posterPath = "poster_path"
         case title

@@ -13,8 +13,8 @@ protocol MovieCellViewModelType: Observable {
 
     func title() -> String?
     func moviePosterUrl() -> String?
-    
+
     func isFavorite() -> Bool
     func changeFavoriteState()
-    
+
 }

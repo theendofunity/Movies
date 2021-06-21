@@ -14,7 +14,7 @@ protocol MoviesViewModelType {
     var requestType: RequestType { get }
 
     var movies: [Movie] { get set }
-    
+
     func numberOfItems() -> Int
     func cellViewModel(for indexPath: IndexPath) -> MovieCellViewModelType?
     func isLastPage() -> Bool

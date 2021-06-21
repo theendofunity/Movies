@@ -24,10 +24,10 @@ protocol Request {
 
 struct PopularRequest: Request {
     let requestType: RequestType = .popular
-    
+
     let path = "/3/movie/popular"
     let page: Int
-    
+
     func url() -> URL? {
         var urlComponents = URLComponents()
         urlComponents.scheme = "https"
@@ -37,7 +37,7 @@ struct PopularRequest: Request {
             URLQueryItem(name: "api_key", value: apiKey),
             URLQueryItem(name: "page", value: String(page))
         ]
-        
+
         return urlComponents.url
     }
 }
@@ -57,7 +57,7 @@ struct TopRequest: Request {
             URLQueryItem(name: "api_key", value: apiKey),
             URLQueryItem(name: "page", value: String(page))
         ]
-        
+
         return urlComponents.url
     }
 }
@@ -79,7 +79,7 @@ struct SearchRequest: Request {
             URLQueryItem(name: "query", value: query),
             URLQueryItem(name: "page", value: String(page))
         ]
-        
+
         return urlComponents.url
     }
 }
